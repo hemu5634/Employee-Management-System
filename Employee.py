@@ -21,7 +21,7 @@ cursorObject.execute("CREATE TABLE IF NOT EXISTS empdata (Id INT(11) PRIMARY KEY
 # for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 # for validating an Phone Number
-Pattern = re.compile("(0|91)?[7-9][0-9]{9}")
+Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
 
 
 # Function to Add_Employ

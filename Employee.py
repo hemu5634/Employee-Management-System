@@ -3,7 +3,7 @@ import mysql.connector
 
 # making Connection
 con = mysql.connector.connect(
-    host='localhost', user='root',password = 'password')
+    host='localhost', user='root',password = '28122001')
 
 # preparing a cursor object
 cursorObject = con.cursor()
@@ -35,14 +35,14 @@ def Add_Employ():
         Add_Employ()
         
     Name = input("Enter Employee Name: ")
-    if (check_employee_name(Name) == True):
-        print("Employee Name Already Exists\nTry Again..")
-        press = input("Press Any Key To Continue..")
-        Add_Employ()
         
     Email_Id = input("Enter Employee Email ID: ")
     if(re.fullmatch(regex, Email_Id)):
         print("Valid Email")
+        if (check_employee_email(Email_Id)==True):
+            print("Employee Email Id Already Exists\nTry Again..")
+            press = input("Press Any Key To Continue..")
+            Add_Employ()  
     else:
         print("Invalid Email")
         press = input("Press Any Key To Continue..")
@@ -51,6 +51,10 @@ def Add_Employ():
     Phone_no = input("Enter Employee Phone No.: ")
     if(Pattern.match(Phone_no)):
         print("Valid Phone Number")
+        if (check_employee_phone(Phone_no)==True):
+            print("Employee Phone Number Already Exists\nTry Again..")
+            press = input("Press Any Key To Continue..")
+            Add_Employ()
     else:
         print("Invalid Phone Number")
         press = input("Press Any Key To Continue..")
@@ -71,13 +75,13 @@ def Add_Employ():
     press = input("Press Any Key To Continue..")
     menu()
 
-#Function To Check if Employee With given Name Exist or not
-def check_employee_name(employee_name):
+#Function To Check if Employee With given Id Exist or not
+def check_employee(employee_id):
 
-    sql = 'select * from empdata where Name=%s'
+    sql = 'select * from empdata where Id=%s'
     
     c = con.cursor(buffered=True)
-    data = (employee_name,)
+    data = (employee_id,)
 
     c.execute(sql, data)
 
@@ -87,13 +91,28 @@ def check_employee_name(employee_name):
     else:
         return False
 
-# Function To Check if Employee With given Id Exist or not
-def check_employee(employee_id):
+# Function To Check if Employee With given Email Id Exist or not
+def check_employee_email(email_id):
 
-    sql = 'select * from empdata where Id=%s'
+    sql = 'select * from empdata where Email_Id=%s'
     
     c = con.cursor(buffered=True)
-    data = (employee_id,)
+    data = (email_id,)
+
+    c.execute(sql, data)
+
+    r = c.rowcount
+    if r == 1:
+        return True
+    else:
+        return False
+# Function To Check if Employee With given Phone Number Exist or not     
+def check_employee_phone(phone_no):
+
+    sql = 'select * from empdata where Phone_no=%s'
+    
+    c = con.cursor(buffered=True)
+    data = (phone_no,)
 
     c.execute(sql, data)
 
@@ -173,7 +192,8 @@ def Promote_Employ():
         press = input("Press Any Key To Continue..")
         menu()
     else:
-        Amount  = int(input("Enter Increase Salary: "))
+        post  = (input("Enter New Post: "))
+        Amount  = int(input("Enter Increment Percent in Salary: "))
 
         sql = 'select Salary from empdata where Id=%s'
         data = (Id,)
@@ -182,10 +202,10 @@ def Promote_Employ():
         c.execute(sql, data)
 
         r = c.fetchone()
-        t = r[0]+Amount
+        t = r[0]+r[0]*Amount/100
 
-        sql = 'update empdata set Salary = %s where Id = %s'
-        d = (t, Id)
+        sql = 'update empdata set Salary = %s,Post = %s where Id = %s'
+        d = (t,post, Id)
 
         c.execute(sql, d)
 

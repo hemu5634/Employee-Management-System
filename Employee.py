@@ -1,19 +1,21 @@
-from os import system
 import re
 import mysql.connector
 
 # making Connection
 con = mysql.connector.connect(
-    host="hostname", user="root", password="rootpass")
+    host='localhost', user='root',password = 'password')
 
 # preparing a cursor object
 cursorObject = con.cursor()
-
+ 
 # creating database
-cursorObject.execute("CREATE DATABASE employee")
+cursorObject.execute("CREATE DATABASE IF NOT EXISTS employee")
 
-# creating table 
-cursorObject.execute("CREATE TABLE empdata (Id INT(11) PRIMARY KEY, Name VARCHAR(255), Email_Id VARCHAR(255), Phone_no BIGINT(11), Address VARCHAR(1800), Post VARCHAR(20), Salary BIGINT(10)) ")
+# selecting employee database
+cursorObject.execute("USE employee")
+
+# creating table
+cursorObject.execute("CREATE TABLE IF NOT EXISTS empdata (Id INT(11) PRIMARY KEY, Name VARCHAR(255), Email_Id VARCHAR(255), Phone_no BIGINT(11), Address VARCHAR(1800), Post VARCHAR(20), Salary BIGINT(10)) ")
 
 # make a regular expression
 # for validating an Email
@@ -244,7 +246,6 @@ def Search_Employ():
 
 # Menu function to display menu
 def menu():
-    system("cls")
     print("{:>60}".format("************************************"))
     print("{:>60}".format("-->> Employee Management System <<--"))
     print("{:>60}".format("************************************"))
@@ -259,26 +260,19 @@ def menu():
 
     ch = int(input("Enter your Choice: "))
     if ch == 1:
-        system("cls")
         Add_Employ()
     elif ch == 2:
-        system("cls")
         Display_Employ()
     elif ch == 3:
-        system("cls")
         Update_Employ()
     elif ch == 4:
-        system("cls")
         Promote_Employ()
     elif ch == 5:
-        system("cls")
         Remove_Employ()
     elif ch == 6:
-        system("cls")
         Search_Employ()
     elif ch == 7:
-        system("cls")
-        print("{:>60}7".format("Have A NIce Day :)"))
+        print("{:>60}".format("See You Soon."))
         exit(0)
     else:
         print("Invalid Choice!")

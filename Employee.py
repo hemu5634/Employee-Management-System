@@ -8,9 +8,12 @@ con = mysql.connector.connect(
 
 # preparing a cursor object
 cursorObject = con.cursor()
- 
+
 # creating database
 cursorObject.execute("CREATE DATABASE employee")
+
+# creating table 
+cursorObject.execute("CREATE TABLE empdata (Id INT(11) PRIMARY KEY, Name VARCHAR(255), Email_Id VARCHAR(255), Phone_no BIGINT(11), Address VARCHAR(1800), Post VARCHAR(20), Salary BIGINT(10)) ")
 
 # make a regular expression
 # for validating an Email

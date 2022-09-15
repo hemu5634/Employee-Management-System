@@ -3,7 +3,7 @@ import mysql.connector
 
 # making Connection
 con = mysql.connector.connect(
-    host='localhost', user='root',password = 'password')
+    host='localhost', user='root',password = '28122001')
 
 # preparing a cursor object
 cursorObject = con.cursor()
@@ -125,22 +125,151 @@ def check_employee_phone(phone_no):
 # Function to Display_Employ
 def Display_Employ():
     print("{:>60}".format("-->> Display Employee Record <<--"))
+    
+    l=int(input('Do you want to limit the data ? (1 for Yes, 0 for No) '))
+    if l==0:
+        s=int(input('Do you want to sort the Data ? (1 for Yes, 0 for No)  '))
+        if s==0:
 
-    sql = 'select * from empdata'
-    c = con.cursor()
+            sql = 'select * from empdata'
+            c = con.cursor()
 
-    c.execute(sql)
+            c.execute(sql)
 
-    r = c.fetchall()
-    for i in r:
-        print("Employee Id: ", i[0])
-        print("Employee Name: ", i[1])
-        print("Employee Email Id: ", i[2])
-        print("Employee Phone No.: ", i[3])
-        print("Employee Address: ", i[4])
-        print("Employee Post: ", i[5])
-        print("Employee Salary: ", i[6])
-        print("\n")
+            r = c.fetchall()
+            for i in r:
+                print("Employee Id: ", i[0])
+                print("Employee Name: ", i[1])
+                print("Employee Email Id: ", i[2])
+                print("Employee Phone No.: ", i[3])
+                print("Employee Address: ", i[4])
+                print("Employee Post: ", i[5])
+                print("Employee Salary: ", i[6])
+                print("\n")
+        
+        elif s==1:
+            sort=int(input('From which column you want to sort the data ? (1 for Id, 2 for Name, 3 for Salary)'))
+            asc=int(input('Do you want to sort ascending or descending ? (1 for ascending, 2 for descending)'))
+            if asc == 1:
+                if sort == 1:
+                    sql='select * from empdata order by id'
+                elif sort == 2 :
+                    sql='select * from empdata order by name'
+                elif sort==3:
+                    sql='select * from empdata order by salary'
+                    
+                
+                c = con.cursor()
+
+                c.execute(sql)
+
+                r = c.fetchall()
+                for i in r:
+                    print("Employee Id: ", i[0])
+                    print("Employee Name: ", i[1])
+                    print("Employee Email Id: ", i[2])
+                    print("Employee Phone No.: ", i[3])
+                    print("Employee Address: ", i[4])
+                    print("Employee Post: ", i[5])
+                    print("Employee Salary: ", i[6])
+                    print("\n")
+            elif asc == 2:
+                
+                if sort == 1:
+                    sql='select * from empdata order by id desc'
+                elif sort == 2 :
+                    sql='select * from empdata order by name desc'
+                elif sort==3:
+                    sql='select * from empdata order by salary desc'
+                
+                c = con.cursor()
+
+                c.execute(sql)
+
+                r = c.fetchall()
+                for i in r:
+                    print("Employee Id: ", i[0])
+                    print("Employee Name: ", i[1])
+                    print("Employee Email Id: ", i[2])
+                    print("Employee Phone No.: ", i[3])
+                    print("Employee Address: ", i[4])
+                    print("Employee Post: ", i[5])
+                    print("Employee Salary: ", i[6])
+                    print("\n")
+                
+    
+    elif l==1:
+        lim=int(input('Enter no of Records Nedded.'))
+        lim=(lim,)
+        s=int(input('Do you want to sort the Data ? (1 for Yes, 0 for No)  '))
+        if s==0:
+
+            sql = 'select * from empdata limit %s'
+            c = con.cursor()
+
+            c.execute(sql,lim)
+
+            r = c.fetchall()
+            for i in r:
+                print("Employee Id: ", i[0])
+                print("Employee Name: ", i[1])
+                print("Employee Email Id: ", i[2])
+                print("Employee Phone No.: ", i[3])
+                print("Employee Address: ", i[4])
+                print("Employee Post: ", i[5])
+                print("Employee Salary: ", i[6])
+                print("\n")
+        
+        elif s==1:
+            sort=int(input('From which column you want to sort the data ? (1 for Id, 2 for Name, 3 for Salary)'))
+            asc=int(input('Do you want to sort ascending or descending ? (1 for ascending, 2 for descending)'))
+            if asc == 1:
+                if sort == 1:
+                    sql='select * from empdata order by id limit %s'
+                elif sort == 2 :
+                    sql='select * from empdata order by name limit %s'
+                elif sort==3:
+                    sql='select * from empdata order by salary limit %s'
+                    
+                
+                c = con.cursor()
+
+                c.execute(sql,lim)
+
+                r = c.fetchall()
+                for i in r:
+                    print("Employee Id: ", i[0])
+                    print("Employee Name: ", i[1])
+                    print("Employee Email Id: ", i[2])
+                    print("Employee Phone No.: ", i[3])
+                    print("Employee Address: ", i[4])
+                    print("Employee Post: ", i[5])
+                    print("Employee Salary: ", i[6])
+                    print("\n")
+            elif asc == 2:
+                
+                if sort == 1:
+                    sql='select * from empdata order by id desc limit %s'
+                elif sort == 2 :
+                    sql='select * from empdata order by name desc limit %s'
+                elif sort==3:
+                    sql='select * from empdata order by salary desc limit %s'
+                
+                c = con.cursor()
+
+                c.execute(sql,lim)
+
+                r = c.fetchall()
+                for i in r:
+                    print("Employee Id: ", i[0])
+                    print("Employee Name: ", i[1])
+                    print("Employee Email Id: ", i[2])
+                    print("Employee Phone No.: ", i[3])
+                    print("Employee Address: ", i[4])
+                    print("Employee Post: ", i[5])
+                    print("Employee Salary: ", i[6])
+                    print("\n")
+        
     press = input("Press Any key To Continue..")
     menu()
     
@@ -148,20 +277,31 @@ def Display_Employ():
 def Update_Employ():
     print("{:>60}".format("-->> Update Employee Record <<--\n"))
     Id = input("Enter Employee Id: ")
+    sq='select * from empdata where Id=%s'
+    d=(Id,)
+    co=con.cursor()
+    co.execute(sq,d)
+    i=co.fetchone()
 
     if(check_employee(Id) == False):
         print("Employee Record Not exists\nTry Again")
         press = input("Press Any Key To Continue..")
         menu()
     else:
-        Email_Id = input("Enter Employee Email ID: ")
+        print('Employee Current Name : ',i[1])
+        Name=input('Enter Employee New Name : ')
+        
+        print('Employee Current Email ID : ',i[2])
+        Email_Id = input("Enter Employee New Email ID : ")
         if(re.fullmatch(regex, Email_Id)):
             print("Valid Email")
         else:
             print("Invalid Email")
             press = input("Press Any Key To Continue..")
             Update_Employ()
-        Phone_no = input("Enter Employee Phone No.: ")
+            
+        print('Employee Current Phone No. : ',i[3])
+        Phone_no = input("Enter Employee Phone No. : ")
         if(Pattern.match(Phone_no)):
             print("Valid Phone Number")
         else:
@@ -169,10 +309,11 @@ def Update_Employ():
             press = input("Press Any Key To Continue..")
             Update_Employ()
             
+        print('Employee Current Address : ',i[4])    
         Address = input("Enter Employee Address: ")
 
-        sql = 'UPDATE empdata set Email_Id = %s, Phone_no = %s, Address = %s where Id = %s'
-        data = (Email_Id, Phone_no, Address, Id)
+        sql = 'UPDATE empdata set Name = %s ,Email_Id = %s, Phone_no = %s, Address = %s where Id = %s'
+        data = (Name,Email_Id, Phone_no, Address, Id)
         c = con.cursor()
 
         c.execute(sql, data)
@@ -191,18 +332,22 @@ def Promote_Employ():
         print("Employee Record Not exists\nTry Again")
         press = input("Press Any Key To Continue..")
         menu()
+        
     else:
-        post  = (input("Enter New Post: "))
-        Amount  = int(input("Enter Increment Percent in Salary: "))
-
-        sql = 'select Salary from empdata where Id=%s'
+        
+        sql = 'select * from empdata where Id=%s'
         data = (Id,)
         c = con.cursor()
 
         c.execute(sql, data)
 
-        r = c.fetchone()
-        t = r[0]+r[0]*Amount/100
+        i = c.fetchone()
+        print('Employee Current Post : ',i[5])
+        post  = (input("Enter New Post: "))
+        print('Employee Current Salary : ',i[6])
+        Amount  = int(input("Enter Increment Percent in Salary: "))
+        
+        t = i[6]+i[6]*Amount/100
 
         sql = 'update empdata set Salary = %s,Post = %s where Id = %s'
         d = (t,post, Id)
